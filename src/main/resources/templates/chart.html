@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диаграмма Ганта</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        h2 {
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .project-name {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .project-bar {
+            background-color: #4caf50;
+            height: 20px;
+            margin: 2px 0;
+            border-radius: 4px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+    <div style="flex: 2; display: flex; align-items: center;">
+        <a href="/" style="text-decoration: none; color: black; font-size: 20px; font-weight: bold;">Гант</a>
+    </div>
+
+    <!-- Навигация -->
+    <nav style="flex: 4; display: flex; justify-content: center; gap: 20px; align-items: center;">
+        <a href="/projects" style="text-decoration: none; color: black; font-size: 18px;">Проекты</a>
+        <a href="/executors" style="text-decoration: none; color: black; font-size: 18px;">Исполнители</a>
+        <a href="/chart" style="text-decoration: none; color: black; font-size: 18px;">Диаграмма</a>
+        <a href="/author" style="text-decoration: none; color: black; font-size: 18px;" id="clientsButton">Об Авторе</a>
+        <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" href="/admin" style="text-decoration: none; color: black; font-size: 18px;">Администрирование</a>
+    </nav>
+
+    <!-- Кнопка выхода -->
+    <div style="flex: 2; display: flex; justify-content: flex-end; align-items: center;">
+        <a href="/logout" style="text-decoration: none; color: black; font-size: 16px;">Выход</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Диаграмма Ганта</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Название Проекта</th>
+            <th>Янв</th>
+            <th>Фев</th>
+            <th>Мар</th>
+            <th>Апр</th>
+            <th>Май</th>
+            <th>Июн</th>
+            <th>Июл</th>
+            <th>Авг</th>
+            <th>Сен</th>
+            <th>Окт</th>
+            <th>Ноя</th>
+            <th>Дек</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="project : ${projects}">
+            <td class="project-name" th:text="${project.name}">Project Name</td>
+            <td colspan="12" style="position: relative;">
+                <div class="project-bar" th:style="|width: ${project.projectWidthPercentage}%; margin-left: ${project.projectOffsetPercentage}%;|"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <a href="/projects" class="back-button">Вернуться к проектам</a>
+    </div>
+</div>
+
+</body>
+</html>
